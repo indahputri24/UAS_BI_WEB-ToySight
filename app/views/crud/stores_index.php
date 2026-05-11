@@ -1,8 +1,22 @@
+<?php
+$store_data = $store_data ?? [
+    'rows' => [],
+    'total' => 0,
+    'page' => 1,
+    'per_page' => 12
+];
+
+$store_data['rows']    = is_array($store_data['rows'] ?? null)   ? $store_data['rows']    : [];
+$store_data['total']   = isset($store_data['total'])             ? (int)$store_data['total'] : 0;
+$store_data['page']    = isset($store_data['page'])              ? (int)$store_data['page']  : 1;
+$store_data['per_page']= isset($store_data['per_page'])          ? (int)$store_data['per_page'] : 12;
+?>
+
 <div class="card">
     <div class="card-header">
         <div>
             <div class="card-eyebrow">Retail Network</div>
-            <h3>Stores (<?= number_format($data['total']) ?>)</h3>
+            <h3>Stores (<?= number_format($store_data['total']) ?>)</h3>
         </div>
         <button class="btn btn-primary" onclick="openModal('store-create')">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
@@ -27,7 +41,7 @@
     </form>
 
     <div class="store-grid">
-        <?php foreach ($data['rows'] as $s): ?>
+        <?php foreach ($store_data['rows'] as $s): ?>
         <div class="store-card">
             <div class="sc-head">
                 <div class="sc-pin">
@@ -57,8 +71,8 @@
     </div>
 
     <?php
-    $pages = max(1, (int)ceil($data['total'] / $data['per_page']));
-    $current = (int)$data['page'];
+    $pages = max(1, (int)ceil($store_data['total'] / $store_data['per_page']));
+    $current = (int)$store_data['page'];
     if ($pages > 1):
     ?>
     <div class="pagination">

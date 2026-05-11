@@ -83,7 +83,7 @@ $page = $page ?? '';
     <?php endif; ?>
 
     <?php if (Auth::can('crud.products') || in_array('products_view', $menu)): ?>
-    <a href="<?= url('products') ?>" class="nav-item <?= ($page === 'product') ? '' : active('products_view', $page) ?>">
+    <a href="<?= url('products') ?>" class="nav-item <?= ($page === 'product') ? '' : active('product_crud', $page) ?>">
         <span class="nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 11V7a4 4 0 0 0-8 0v4"/><rect x="5" y="11" width="14" height="10" rx="2"/></svg></span>
         <span class="nav-label">Produk</span>
     </a>
@@ -97,7 +97,7 @@ $page = $page ?? '';
     <?php endif; ?>
 
     <?php if (Auth::can('crud.stores')): ?>
-    <a href="<?= url('stores') ?>" class="nav-item">
+    <a href="<?= url('stores') ?>" class="nav-item <?= active('store_crud', $page) ?>">
         <span class="nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l1-6h16l1 6"/><path d="M3 9v11h18V9"/></svg></span>
         <span class="nav-label">Toko</span>
     </a>

@@ -450,6 +450,7 @@ body.sidebar-collapsed .nav-item { justify-content: center; padding: 12px; }
 /* ============== KPI CARDS =============== */
 .kpi-grid {
     display: grid;
+    align-items:stretch;
     grid-template-columns: repeat(4, 1fr);
     gap: 16px;
     margin-bottom: 24px;
@@ -606,7 +607,7 @@ body.sidebar-collapsed .nav-item { justify-content: center; padding: 12px; }
 .span-2 { grid-column: span 2; }
 
 /* ============== TABLE =============== */
-.table-wrap { overflow-x: auto; }
+.table-wrap { width:100%; overflow-x: auto; }
 .table {
     width: 100%;
     border-collapse: collapse;
@@ -631,7 +632,7 @@ body.sidebar-collapsed .nav-item { justify-content: center; padding: 12px; }
 }
 .table tbody td.num { text-align: right; }
 .table tbody tr:hover { background: var(--bg-soft); }
-.table-clean tbody tr:hover { background: rgba(34,211,238,.04); }
+.table-clean tbody tr:hover { background: rgba(34,211,238,.04); min-width:900px;}
 
 /* ============== CHIPS =============== */
 .chip {
@@ -1053,34 +1054,61 @@ body.sidebar-collapsed .nav-item { justify-content: center; padding: 12px; }
 
 /* ============== REPORT TYPES =============== */
 .report-types {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 12px;
-    margin-bottom: 16px;
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+    gap:22px;
+    margin-top:24px;
 }
-.rt-card {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    padding: 14px 16px;
-    border: 2px solid var(--border-soft);
-    border-radius: 12px;
-    cursor: pointer;
-    transition: all .15s;
-    background: var(--card);
+
+.report-form{
+    display:flex;
+    flex-direction:column;
+    gap:28px;
 }
-.rt-card:hover { border-color: var(--accent-soft); }
+
+.report-filter{
+    display:flex;
+    flex-wrap:wrap;
+    gap:18px;
+    align-items:flex-end;
+    padding-top:18px;
+    border-top:1px solid var(--border-soft);
+}
+
+.report-filter .filter-group{
+    min-width:180px;
+}
+
+.emoji-icon{
+    font-size:20px;
+}
+
+.rt-card{
+    position:relative;
+    display:flex;
+    flex-direction:column;
+    justify-content:flex-start;
+    gap:12px;
+    padding:22px;
+    border:1px solid var(--border-soft);
+    border-radius:18px;
+    min-height:160px;
+    cursor:pointer;
+    transition:all .2s ease;
+    background:var(--card);
+}
+
+.rt-card:hover { border-color: var(--accent-soft); transform:translateY(-3px); }
 .rt-card.active { border-color: var(--primary); background: linear-gradient(135deg, rgba(30,58,95,.04), rgba(34,211,238,.06)); }
 .rt-card input { display: none; }
 .rt-icon {
-    width: 36px; height: 36px;
-    border-radius: 10px;
-    background: rgba(30,58,95,.08);
-    color: var(--primary);
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 4px;
+    width:48px;
+    height:48px;
+    border-radius:14px;
+    background:rgba(30,58,95,.08);
+    display:flex;
+    align-items:center;
+    justify-content:center;
 }
 .rt-card.active .rt-icon { background: var(--primary); color: #fff; }
 .rt-title { font-weight: 700; font-size: 13.5px; }
@@ -1092,8 +1120,11 @@ body.sidebar-collapsed .nav-item { justify-content: center; padding: 12px; }
     padding-top: 12px;
     border-top: 1px solid var(--border-soft);
 }
-.report-actions { display: flex; gap: 8px; }
-
+.report-actions { display: flex; gap: 12px; flex-wrap:wrap;}
+.report-actions .btn{
+    height:46px;
+    padding:0 18px;
+}
 /* ============== INPUT (LOGIN) =============== */
 .input-wrap {
     display: flex;

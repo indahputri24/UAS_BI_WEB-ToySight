@@ -1,9 +1,25 @@
-<?php $can_edit = $can_edit ?? false; ?>
+<?php
+$can_edit   = $can_edit   ?? false;
+$product_data = $product_data ?? [
+    'rows' => [],
+    'total' => 0,
+    'page' => 1,
+    'per_page' => 12
+];
+$product_data['rows']    = is_array($product_data['rows'] ?? null)    ? $product_data['rows']    : [];
+$product_data['total']   = isset($product_data['total'])              ? (int)$product_data['total']   : 0;
+$product_data['page']    = isset($product_data['page'])               ? (int)$product_data['page']    : 1;
+$product_data['per_page']= isset($product_data['per_page'])           ? (int)$product_data['per_page']: 12;
+$search     = $search     ?? '';
+$category_f = $category_f ?? '';
+$categories = $categories ?? [];
+?>
+
 <div class="card">
     <div class="card-header">
         <div>
-            <div class="card-eyebrow">Inventory Master Data</div>
-            <h3>Products (<?= number_format($data['total']) ?>)</h3>
+            <div class="card-eyebrow">Inventory Master product_data</div>
+            <h3>Products (<?= number_format($product_data['total']) ?>)</h3>
         </div>
         <?php if ($can_edit): ?>
         <button class="btn btn-primary" onclick="openModal('product-create')">
@@ -32,7 +48,7 @@
     </form>
 
     <div class="product-grid">
-        <?php foreach ($data['rows'] as $p): ?>
+        <?php foreach ($product_data['rows'] as $p): ?>
         <div class="product-card">
             <div class="pc-top">
                 <div class="pc-icon">
@@ -62,8 +78,8 @@
     </div>
 
     <?php
-    $pages = max(1, (int)ceil($data['total'] / $data['per_page']));
-    $current = (int)$data['page'];
+    $pages = max(1, (int)ceil($product_data['total'] / $product_data['per_page']));
+    $current = (int)$product_data['page'];
     if ($pages > 1):
     ?>
     <div class="pagination">

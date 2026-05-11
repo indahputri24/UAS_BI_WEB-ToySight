@@ -32,9 +32,9 @@ class StoreController extends Controller
         $page   = max(1, (int)input('page',1));
         $data   = $model->paginate($search, $city, $page, 12);
         $this->render('crud/stores_index', [
-            'page'      => 'store',
+            'page'      => 'store_crud',
             'page_title'=> 'Manajemen Toko',
-            'data'      => $data,
+            'store_data'=> $data,
             'search'    => $search,
             'city_f'    => $city,
             'cities'    => $model->cities(),

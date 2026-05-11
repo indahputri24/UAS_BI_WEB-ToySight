@@ -1,8 +1,19 @@
+<?php
+$users_data = $users_data ?? [];
+$users_data['rows']  = is_array($users_data['rows'] ?? null) ? $users_data['rows'] : [];
+$users_data['total'] = isset($users_data['total'])           ? (int)$users_data['total'] : 0;
+ 
+$search    = $search    ?? '';
+$page_num  = $page_num  ?? 1;
+$per_page  = $per_page  ?? 15;
+$roles_cfg = $roles_cfg ?? [];
+?>
+
 <div class="card">
     <div class="card-header">
         <div>
             <div class="card-eyebrow">Kontrol Akses</div>
-            <h3>Pengguna &amp; Role (<?= number_format($data['total']) ?>)</h3>
+            <h3>Pengguna &amp; Role (<?= number_format($users_data['total']) ?>)</h3>
         </div>
         <button class="btn btn-primary" onclick="openModal('user-create')">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
@@ -26,7 +37,7 @@
                 <th>Pengguna</th><th>Username</th><th>Email</th><th>Role</th><th>Status</th><th>Dibuat</th><th>Aksi</th>
             </tr></thead>
             <tbody>
-            <?php foreach ($data['rows'] as $u): ?>
+            <?php foreach ($users_data['rows'] as $u): ?>
             <tr>
                 <td>
                     <div class="user-cell">
@@ -58,7 +69,7 @@
     </div>
 
     <?php
-    $pages = max(1, (int)ceil($data['total'] / $per_page));
+    $pages = max(1, (int)ceil($users_data['total'] / $per_page));
     if ($pages > 1):
     ?>
     <div class="pagination">

@@ -1,3 +1,17 @@
+<?php
+
+$inventory_data = $inventory_data ?? [
+    'rows' => [],
+    'total' => 0,
+    'page' => 1,
+    'per_page' => 12
+];
+
+$search = $search ?? '';
+$status_f = $status_f ?? '';
+
+?>
+
 <div class="kpi-grid kpi-grid-4">
     <div class="mini-card">
         <div class="mini-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 8V21H3V8M1 3h22v5z"/></svg></div>
@@ -21,7 +35,7 @@
     <div class="card-header">
         <div>
             <div class="card-eyebrow">Stock Records</div>
-            <h3>Inventory Management (<?= number_format($data['total']) ?>)</h3>
+            <h3>Inventory Management (<?= number_format($inventory_data['total']) ?>)</h3>
         </div>
         <button class="btn btn-primary" onclick="openModal('inv-create')">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
@@ -53,7 +67,7 @@
                 <th class="num">Stock</th><th>Status</th><th>Actions</th>
             </tr></thead>
             <tbody>
-            <?php foreach ($data['rows'] as $r):
+            <?php foreach ($inventory_data['rows'] as $r):
                 $s = (int)$r['stock_on_hand'];
                 if ($s === 0) { $statusClass='chip-danger'; $statusLabel='Out of Stock'; }
                 elseif ($s <= 10) { $statusClass='chip-warning'; $statusLabel='Low'; }
@@ -78,8 +92,8 @@
     </div>
 
     <?php
-    $pages = max(1, (int)ceil($data['total'] / $data['per_page']));
-    $current = (int)$data['page'];
+    $pages = max(1, (int)ceil($inventory_data['total'] / $inventory_data['per_page']));
+    $current = (int)$inventory_data['page'];
     if ($pages > 1):
     ?>
     <div class="pagination">

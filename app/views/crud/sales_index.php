@@ -1,8 +1,23 @@
+<?php
+
+$sales_data = $sales_data ?? [
+    'rows' => [],
+    'total' => 0,
+    'page' => 1,
+    'per_page' => 12
+];
+
+$search = $search ?? '';
+$store_f = $store_f ?? '';
+$product_f = $product_f ?? '';
+
+?>
+
 <div class="card">
     <div class="card-header">
         <div>
             <div class="card-eyebrow">Transactions</div>
-            <h3>Sales Records (<?= number_format($data['total']) ?>)</h3>
+            <h3>Sales Records (<?= number_format($sales_data['total']) ?>)</h3>
         </div>
         <button class="btn btn-primary" onclick="openModal('sale-create')">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
@@ -29,7 +44,7 @@
                 <th>Actions</th>
             </tr></thead>
             <tbody>
-            <?php foreach ($data['rows'] as $r): ?>
+            <?php foreach ($sales_data['rows'] as $r): ?>
             <tr>
                 <td>#<?= e((string)$r['sale_id']) ?></td>
                 <td><?= e(date('M d, Y', strtotime($r['full_date']))) ?></td>
@@ -52,8 +67,8 @@
     </div>
 
     <?php
-    $pages = max(1, (int)ceil($data['total'] / $data['per_page']));
-    $current = (int)$data['page'];
+    $pages = max(1, (int)ceil($sales_data['total'] / $sales_data['per_page']));
+    $current = (int)$sales_data['page'];
     if ($pages > 1):
     ?>
     <div class="pagination">
@@ -83,7 +98,7 @@
                         <option value="">Select product…</option>
                         <?php foreach ($products as $p): ?>
                         <option value="<?= (int)$p['product_key'] ?>"
-                            data-price="<?= e((string)$p['product_price']) ?>">
+                        $sales_data-price="<?= e((string)$p['product_price']) ?>">
                             <?= e($p['product_name']) ?> · <?= money((float)$p['product_price']) ?>
                         </option>
                         <?php endforeach; ?>

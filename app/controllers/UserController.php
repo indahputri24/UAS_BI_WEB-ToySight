@@ -14,7 +14,7 @@ class UserController extends Controller
         $this->render('users/index', [
             'page'      => 'users',
             'page_title'=> 'Manajemen Pengguna',
-            'data'      => $data,
+            'users_data'=> $data,
             'search'    => $search,
             'page_num'  => $page,
             'per_page'  => $perPage,

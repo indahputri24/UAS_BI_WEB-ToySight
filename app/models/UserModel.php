@@ -59,23 +59,35 @@ class UserModel
 
     public function all(string $search = '', int $limit = 50, int $offset = 0): array
     {
-        $where = '';
+        $where  = '';
         $params = [];
         if ($search !== '') {
-            $where = "WHERE username LIKE ? OR full_name LIKE ? OR email LIKE ?";
-            $like = "%$search%";
+            $where  = "WHERE username LIKE ? OR full_name LIKE ? OR email LIKE ?";
+            $like   = "%$search%";
             $params = [$like, $like, $like];
         }
-        $rows = Database::fetchAll(
-            "SELECT id, username, full_name, email, role, is_active, created_at
-             FROM app_users $where ORDER BY id DESC LIMIT $limit OFFSET $offset",
-            $params
-        );
-        $total = Database::fetchValue(
-            "SELECT COUNT(*) FROM app_users $where",
-            $params
-        );
-        return ['rows' => $rows, 'total' => (int)$total];
+ 
+        try {
+            $rows = Database::fetchAll(
+                "SELECT id, username, full_name, email, role, is_active, created_at
+                 FROM app_users $where ORDER BY id DESC LIMIT $limit OFFSET $offset",
+                $params
+            );
+            $total = Database::fetchValue(
+                "SELECT COUNT(*) FROM app_users $where",
+                $params
+            );
+            return [
+                'rows'  => $rows  ?? [],
+                'total' => (int)($total ?? 0),
+            ];
+        } catch (Throwable $e) {
+            error_log($e->getMessage());
+            return [
+                'rows'  => [],
+                'total' => 0,
+            ];
+        }
     }
 
     public function create(array $data): int

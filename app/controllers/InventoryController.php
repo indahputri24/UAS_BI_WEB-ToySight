@@ -29,7 +29,7 @@ class InventoryController extends Controller
         $this->render('crud/inventory_index', [
             'page'        => 'inventory_crud',
             'page_title'  => 'Manajemen Inventaris',
-            'data'        => $data,
+            'inventory_data' => $data,
             'search'      => $search,
             'stock'       => $stock,
             'summary'     => $model->summary(),

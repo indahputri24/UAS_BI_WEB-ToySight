@@ -51,7 +51,7 @@ class SalesController extends Controller
         $this->render('crud/sales_index', [
             'page'      => 'sales_crud',
             'page_title'=> 'Manajemen Penjualan',
-            'data'      => $data,
+            'sales_data'=> $data,
             'search'    => $search,
             'products'  => $prodModel->all(),
             'stores'    => $storeModel->all(),

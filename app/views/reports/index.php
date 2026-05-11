@@ -90,7 +90,7 @@
             <tbody>
             <?php foreach ($data as $i => $r): ?>
             <tr>
-                <td><?= $i+1 ?></td>
+                <td><?= ((int)$i) + 1 ?></td>
                 <td><strong><?= e($r['label']) ?></strong></td>
                 <td class="num"><?= money((float)$r['revenue']) ?></td>
                 <td class="num"><?= money((float)$r['profit']) ?></td>
@@ -103,7 +103,7 @@
             <tbody>
             <?php foreach ($data as $i => $r): ?>
             <tr>
-                <td><?= $i+1 ?></td>
+                <td><?= ((int)$i) + 1 ?></td>
                 <td><strong><?= e($r['product_name']) ?></strong></td>
                 <td><?= e($r['product_category']) ?></td>
                 <td><span class="chip chip-soft"><?= e($r['price_tier']) ?></span></td>
@@ -119,7 +119,7 @@
             <tbody>
             <?php foreach ($data as $i => $r): ?>
             <tr>
-                <td><?= $i+1 ?></td>
+                <td><?= ((int)$i) + 1 ?></td>
                 <td><strong><?= e($r['store_name']) ?></strong></td>
                 <td><?= e($r['store_city']) ?></td>
                 <td><span class="chip chip-soft"><?= e($r['store_location']) ?></span></td>
@@ -135,7 +135,7 @@
             <tbody>
             <?php foreach ($data as $i => $r): ?>
             <tr>
-                <td><?= $i+1 ?></td>
+                <td><?= ((int)$i) + 1 ?></td>
                 <td><strong><?= e($r['category']) ?></strong></td>
                 <td class="num"><?= e((string)$r['products']) ?></td>
                 <td class="num"><?= compact_number((int)$r['units']) ?></td>

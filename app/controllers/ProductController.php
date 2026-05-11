@@ -33,9 +33,9 @@ class ProductController extends Controller
         $data     = $model->paginate($search, $category, $page, 12);
 
         $this->render('crud/products_index', [
-            'page'        => 'product',
+            'page'        => 'product_crud',
             'page_title'  => 'Manajemen Produk',
-            'data'        => $data,
+            'product_data'=> $data,
             'search'      => $search,
             'category_f'  => $category,
             'categories'  => $model->categories(),
