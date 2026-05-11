@@ -145,7 +145,7 @@ class SalesModel
             $params = [$like, $like, $like];
         }
         $rows = Database::fetchAll(
-            "SELECT s.sales_key, s.sale_id, d.full_date,
+            "SELECT s.sales_key, s.sale_id, s.product_key, s.store_key, d.full_date,
                     p.product_name, p.product_category, p.product_price,
                     st.store_name, st.store_city,
                     s.units, s.unit_price, s.revenue, s.gross_profit
@@ -154,7 +154,7 @@ class SalesModel
              JOIN dw__dim_product p ON p.product_key = s.product_key
              JOIN dw__dim_store st  ON st.store_key  = s.store_key
              $where
-             ORDER BY s.sales_key DESC
+             ORDER BY s.sale_id DESC
              LIMIT $perPage OFFSET $offset", $params);
         $total = (int)Database::fetchValue(
             "SELECT COUNT(*) FROM dw__fact_sales s
@@ -192,23 +192,54 @@ class SalesModel
         $profit   = $revenue - $cogs;
         $margin   = $revenue > 0 ? round($profit / $revenue * 100, 2) : 0;
 
+        $nextSalesKey = (int)Database::fetchValue(
+            "SELECT COALESCE(MAX(sales_key),0)+1 FROM dw__fact_sales"
+        );
         $nextSaleId = (int)Database::fetchValue("SELECT COALESCE(MAX(sale_id),0)+1 FROM dw__fact_sales");
 
         $stmt = Database::connection()->prepare(
             "INSERT INTO dw__fact_sales
-                (sale_id, date_key, product_key, store_key, units, unit_price, unit_cost, revenue, cogs, gross_profit, margin_pct)
-             VALUES (?,?,?,?,?,?,?,?,?,?,?)"
+            (
+                sales_key,
+                sale_id,
+                date_key,
+                product_key,
+                store_key,
+                units,
+                unit_price,
+                unit_cost,
+                revenue,
+                cogs,
+                gross_profit,
+                margin_pct
+            )
+            VALUES (?,?,?,?,?,?,?,?,?,?,?,?)"
         );
+
         $stmt->execute([
-            $nextSaleId, $date['date_key'], $prod['product_key'], $store['store_key'],
-            $units, $price, $cost, $revenue, $cogs, $profit, $margin,
+            $nextSalesKey,
+            $nextSaleId,
+            $date['date_key'],
+            $prod['product_key'],
+            $store['store_key'],
+            $units,
+            $price,
+            $cost,
+            $revenue,
+            $cogs,
+            $profit,
+            $margin,
         ]);
-        return (int)Database::connection()->lastInsertId();
+
+        return $nextSalesKey;
     }
 
     public function update(int $salesKey, array $d): bool
     {
-        $row = $this->find($salesKey);
+        $row = Database::fetchOne(
+            "SELECT * FROM dw__fact_sales WHERE sale_id=?",
+            [$salesKey]
+        );
         if (!$row) return false;
         $prod = Database::fetchOne("SELECT * FROM dw__dim_product WHERE product_key=?", [$d['product_key'] ?? $row['product_key']]);
         $units = (int)($d['units'] ?? $row['units']);
@@ -219,11 +250,31 @@ class SalesModel
         $profit  = $revenue - $cogs;
         $margin  = $revenue > 0 ? round($profit / $revenue * 100, 2) : 0;
 
-        $date = Database::fetchOne("SELECT date_key FROM dw__dim_date WHERE full_date=?", [$d['full_date'] ?? $row['full_date']]);
+        $fullDate = $d['full_date'] ?? null;
+
+        if (!$fullDate) {
+
+            $dateRow = Database::fetchOne(
+                "SELECT full_date
+                FROM dw__dim_date
+                WHERE date_key=?",
+                [$row['date_key']]
+            );
+
+            $fullDate = $dateRow['full_date'] ?? null;
+        }
+
+        $date = Database::fetchOne(
+            "SELECT date_key
+            FROM dw__dim_date
+            WHERE full_date=?",
+            [$fullDate]
+        );
+
         $stmt = Database::connection()->prepare(
             "UPDATE dw__fact_sales SET
                 date_key=?, product_key=?, store_key=?, units=?, unit_price=?, unit_cost=?, revenue=?, cogs=?, gross_profit=?, margin_pct=?
-             WHERE sales_key=?"
+             WHERE sale_id=?"
         );
         return $stmt->execute([
             $date['date_key'], $prod['product_key'], $d['store_key'] ?? $row['store_key'],
@@ -233,7 +284,7 @@ class SalesModel
 
     public function delete(int $salesKey): bool
     {
-        $stmt = Database::connection()->prepare("DELETE FROM dw__fact_sales WHERE sales_key=?");
+        $stmt = Database::connection()->prepare("DELETE FROM dw__fact_sales WHERE sale_id=?");
         return $stmt->execute([$salesKey]);
     }
 }

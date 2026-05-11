@@ -57,8 +57,21 @@ $product_f = $product_f ?? '';
                 <td class="num"><strong><?= money((float)$r['revenue']) ?></strong></td>
                 <td class="num"><?= money((float)$r['gross_profit']) ?></td>
                 <td>
-                    <button class="btn btn-sm btn-light" onclick='openSaleEdit(<?= json_encode($r) ?>)'>Edit</button>
-                    <button class="btn btn-sm btn-danger-ghost" onclick='confirmSaleDelete(<?= (int)$r['sales_key'] ?>)'>Delete</button>
+                    <button
+                        type="button"
+                        class="btn btn-sm btn-light"
+                        onclick="openSaleEdit(this)"
+
+                        data-sales-key="<?= (int)$r['sale_id'] ?>"
+                        data-product-key="<?= (int)$r['product_key'] ?>"
+                        data-store-key="<?= (int)$r['store_key'] ?>"
+                        data-date="<?= e($r['full_date']) ?>"
+                        data-units="<?= (int)$r['units'] ?>"
+                        data-price="<?= e((string)$r['unit_price']) ?>"
+                    >
+                        Edit
+                    </button>
+                    <button class="btn btn-sm btn-danger-ghost" onclick='confirmSaleDelete(<?= (int)$r['sale_id'] ?>)'>Delete</button>
                 </td>
             </tr>
             <?php endforeach; ?>
@@ -194,15 +207,29 @@ $product_f = $product_f ?? '';
 </div>
 
 <script>
-function openSaleEdit(r) {
-    document.getElementById('es_key').value     = r.sales_key;
-    document.getElementById('es_product').value = r.product_key || '';
-    document.getElementById('es_store').value   = r.store_key || '';
-    document.getElementById('es_date').value    = r.full_date;
-    document.getElementById('es_units').value   = r.units;
-    document.getElementById('es_price').value   = r.unit_price;
+function openSaleEdit(btn) {
+
+    document.getElementById('es_key').value =
+        btn.dataset.salesKey;
+
+    document.getElementById('es_product').value =
+        btn.dataset.productKey;
+
+    document.getElementById('es_store').value =
+        btn.dataset.storeKey;
+
+    document.getElementById('es_date').value =
+        btn.dataset.date;
+
+    document.getElementById('es_units').value =
+        btn.dataset.units;
+
+    document.getElementById('es_price').value =
+        btn.dataset.price;
+
     openModal('sale-edit');
 }
+
 function confirmSaleDelete(id) {
     document.getElementById('ds_key').value = id;
     openModal('sale-delete');
