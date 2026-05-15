@@ -57,13 +57,6 @@
                     <span>Akses aman multi-role</span>
                 </div>
             </div>
-
-            <div class="deco-blocks">
-                <span class="db b1"></span>
-                <span class="db b2"></span>
-                <span class="db b3"></span>
-                <span class="db b4"></span>
-            </div>
         </div>
     </div>
 
@@ -116,32 +109,6 @@
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
                 </button>
             </form>
-
-            <div class="demo-creds">
-                <div class="dc-title">Akun demo <span class="muted">(klik untuk autofill)</span></div>
-                <div class="dc-grid">
-                    <button type="button" class="dc-btn" onclick="fill('admin','admin123')">
-                        <span class="dc-role admin">Admin</span>
-                        <span class="dc-user">admin / admin123</span>
-                    </button>
-                    <button type="button" class="dc-btn" onclick="fill('manager','manager123')">
-                        <span class="dc-role manager">Manager</span>
-                        <span class="dc-user">manager / manager123</span>
-                    </button>
-                    <button type="button" class="dc-btn" onclick="fill('sales','sales123')">
-                        <span class="dc-role sales">Sales</span>
-                        <span class="dc-user">sales / sales123</span>
-                    </button>
-                    <button type="button" class="dc-btn" onclick="fill('warehouse','warehouse123')">
-                        <span class="dc-role warehouse">Gudang</span>
-                        <span class="dc-user">warehouse / warehouse123</span>
-                    </button>
-                </div>
-            </div>
-
-            <div class="login-foot muted">
-                <?= e($app['name']) ?> &middot; v<?= e($app['version']) ?> &middot; &copy; <?= date('Y') ?>
-            </div>
         </div>
     </div>
 </div>
