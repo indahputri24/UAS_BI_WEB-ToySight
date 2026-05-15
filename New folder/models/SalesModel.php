@@ -119,9 +119,8 @@ class SalesModel
         $clauses = [];
         $params  = [];
         if ($start && $end) {
-            $clauses[] = "DATE(d.full_date) BETWEEN DATE(?) AND DATE(?)";
-            $params[] = $start;
-            $params[] = $end;
+            $clauses[] = "d.full_date BETWEEN ? AND ?";
+            $params[] = $start; $params[] = $end;
         }
         if ($storeKey) {
             $clauses[] = "s.store_key = ?";

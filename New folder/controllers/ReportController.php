@@ -6,11 +6,8 @@ class ReportController extends Controller
         Auth::require('reports.view');
         $dash   = new DashboardModel();
         $bounds = $dash->dateBounds();
-        $startRaw = input('start_date', $bounds['min_date']);
-        $endRaw   = input('end_date',   $bounds['max_date']);
-
-        $start = date('Y-m-d', strtotime($startRaw));
-        $end   = date('Y-m-d', strtotime($endRaw));
+        $start  = (string)input('start_date', $bounds['min_date']);
+        $end    = (string)input('end_date',   $bounds['max_date']);
 
         $sales  = new SalesModel();
         $store  = new StoreModel();

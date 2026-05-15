@@ -188,8 +188,7 @@ $marginClass = static function (float $pct): string {
 
         <!-- Result card -->
         <div class="rp-result-card">
-            <!-- <pre><?php print_r($report_type); ?></pre>  -->
-            <!-- <pre><?php print_r($data); ?></pre>  -->
+
             <div class="rp-result-head">
                 <div>
                     <div class="rp-result-eyebrow">
