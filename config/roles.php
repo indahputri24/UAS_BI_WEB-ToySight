@@ -44,7 +44,7 @@ return [
         ],
         'sales' => [
             'label' => 'Sales Staff',
-            'menu'  => ['dashboard', 'sales_crud', 'orders', 'products_view'],
+            'menu'  => ['dashboard', 'sales_crud', 'orders', 'products_view', 'sales', 'product'],
             'permissions' => [
                 'dashboard.view'   => true,
                 'analytics.sales'  => true,
@@ -64,16 +64,16 @@ return [
         ],
         'warehouse' => [
             'label' => 'Warehouse Staff',
-            'menu'  => ['dashboard', 'inventory_crud', 'products_view', 'stock_monitor'],
+            'menu'  => ['dashboard', 'inventory_crud', 'stock_monitor'],
             'permissions' => [
                 'dashboard.view'   => true,
                 'analytics.sales'  => false,
                 'analytics.inventory' => true,
-                'analytics.product'=> true,
+                'analytics.product'=> false,
                 'analytics.store'  => false,
                 'reports.view'     => false,
                 'reports.export'   => false,
-                'crud.products'    => true,
+                'crud.products'    => false,
                 'crud.inventory'   => true,
                 'crud.sales'       => false,
                 'crud.stores'      => false,

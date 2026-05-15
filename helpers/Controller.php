@@ -5,10 +5,11 @@ class Controller
     public function render(string $view, array $data = [], string $layout = 'layouts/main'): void
     {
         $appCfg = require __DIR__ . '/../config/app.php';
-        $data['app']  = $appCfg;
-        $data['user'] = Auth::user();
-        $data['flash']= get_flash();
-        extract($data, EXTR_SKIP);
+        $data['app']   = $appCfg;
+        $data['user']  = Auth::user();
+        $data['flash'] = get_flash();
+
+        extract($data, EXTR_OVERWRITE);
 
         $viewFile = __DIR__ . '/../app/views/' . $view . '.php';
         if (!file_exists($viewFile)) {

@@ -36,10 +36,10 @@ $unit_growth = (float)($kpis['unit_growth'] ?? 0);
 <div class="kpi-grid">
     <?php
     $kpiCards = [
-        ['Total Pendapatan',    compact_money($total_rev),         $rev_growth,   'cyan',   'M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6'],
-        ['Total Pesanan',       compact_number($total_ord),        $ord_growth,   'orange', 'M3 3h2l3 12h13l3-9H6M9 21a1 1 0 100-2 1 1 0 000 2zM20 21a1 1 0 100-2 1 1 0 000 2z'],
-        ['Unit Terjual',        compact_number($total_units),      $unit_growth,  'blue',   'M21 16V8a2 2 0 00-1-1.7l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.7l7 4a2 2 0 002 0l7-4A2 2 0 0021 16zM3.3 7L12 12l8.7-5M12 22V12'],
-        ['Laba Kotor',          compact_money($total_prof),        null,          'green',  'M3 17l6-6 4 4 8-8M14 7h7v7'],
+        ['Total Pendapatan', compact_money($total_rev),    $rev_growth,  'cyan',   'M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6'],
+        ['Total Pesanan',    compact_number($total_ord),   $ord_growth,  'orange', 'M3 3h2l3 12h13l3-9H6M9 21a1 1 0 100-2 1 1 0 000 2zM20 21a1 1 0 100-2 1 1 0 000 2z'],
+        ['Unit Terjual',     compact_number($total_units), $unit_growth, 'blue',   'M21 16V8a2 2 0 00-1-1.7l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.7l7 4a2 2 0 002 0l7-4A2 2 0 0021 16zM3.3 7L12 12l8.7-5M12 22V12'],
+        ['Laba Kotor',       compact_money($total_prof),   null,         'green',  'M3 17l6-6 4 4 8-8M14 7h7v7'],
     ];
     foreach ($kpiCards as $i => $c):
         [$label, $value, $growth, $color, $icon] = $c;
@@ -47,7 +47,9 @@ $unit_growth = (float)($kpis['unit_growth'] ?? 0);
     <div class="kpi-card kpi-<?= e($color) ?>" style="animation-delay: <?= $i*60 ?>ms">
         <div class="kpi-top">
             <span class="kpi-icon">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="<?= $icon ?>"/></svg>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="<?= $icon ?>"/>
+                </svg>
             </span>
             <?php if ($growth !== null): ?>
             <span class="kpi-trend <?= $growth >= 0 ? 'up' : 'down' ?>">
@@ -68,14 +70,16 @@ $unit_growth = (float)($kpis['unit_growth'] ?? 0);
 <div class="kpi-grid kpi-grid-3">
     <?php
     $small = [
-        ['Total Produk',      compact_number((int)$kpis['total_products']), 'M16 11V7a4 4 0 0 0-8 0v4M5 11h14l-1 10H6z'],
-        ['Toko',              compact_number((int)$kpis['total_stores']),   'M3 9l1-6h16l1 6M3 9v11h18V9'],
-        ['Stok Inventaris',   compact_number((int)$kpis['total_inventory']),'M21 8V21H3V8M1 3h22v5z'],
+        ['Total Produk',    compact_number((int)$kpis['total_products']),  'M16 11V7a4 4 0 0 0-8 0v4M5 11h14l-1 10H6z'],
+        ['Toko',            compact_number((int)$kpis['total_stores']),    'M3 9l1-6h16l1 6M3 9v11h18V9'],
+        ['Stok Inventaris', compact_number((int)$kpis['total_inventory']), 'M21 8V21H3V8M1 3h22v5z'],
     ];
     foreach ($small as $s): ?>
     <div class="mini-card">
         <div class="mini-icon">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="<?= $s[2] ?>"/></svg>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="<?= $s[2] ?>"/>
+            </svg>
         </div>
         <div>
             <div class="mini-value"><?= e($s[1]) ?></div>
@@ -84,7 +88,11 @@ $unit_growth = (float)($kpis['unit_growth'] ?? 0);
     </div>
     <?php endforeach; ?>
     <div class="mini-card">
-        <div class="mini-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div>
+        <div class="mini-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>
+            </svg>
+        </div>
         <div>
             <div class="mini-value"><?= number_format((float)($kpis['avg_margin'] ?? 0), 1) ?>%</div>
             <div class="mini-label">Margin Rata-rata</div>
@@ -97,7 +105,17 @@ $unit_growth = (float)($kpis['unit_growth'] ?? 0);
         <div class="card-header">
             <div>
                 <div class="card-eyebrow">Performa Pendapatan</div>
-                <h3>Tren Pendapatan &amp; Laba Harian</h3>
+                <h3>Tren Pendapatan &amp; Laba Bulanan</h3>
+            </div>
+            <div style="display:flex;align-items:center;gap:14px;font-size:12px;color:#64748b;flex-shrink:0;margin-left:auto">
+                <span style="display:flex;align-items:center;gap:6px">
+                    <span style="display:inline-block;width:24px;height:3px;background:#1E3A5F;border-radius:2px"></span>
+                    Pendapatan
+                </span>
+                <span style="display:flex;align-items:center;gap:6px">
+                    <span style="display:inline-block;width:24px;height:3px;background:#22D3EE;border-radius:2px"></span>
+                    Laba
+                </span>
             </div>
         </div>
         <div id="chartTrend" class="chart-area"></div>
@@ -130,8 +148,10 @@ $unit_growth = (float)($kpis['unit_growth'] ?? 0);
                 <tbody>
                 <?php foreach ($top_prod as $p): ?>
                 <tr>
-                    <td><strong><?= e($p['product_name']) ?></strong>
-                        <div class="muted small">@ <?= e(money((float)$p['product_price'])) ?></div></td>
+                    <td>
+                        <strong><?= e($p['product_name']) ?></strong>
+                        <div class="muted small">@ <?= e(money((float)$p['product_price'])) ?></div>
+                    </td>
                     <td><span class="chip chip-soft"><?= e($p['product_category']) ?></span></td>
                     <td class="num"><?= compact_number((int)$p['units']) ?></td>
                     <td class="num"><strong><?= compact_money((float)$p['revenue']) ?></strong></td>
@@ -185,8 +205,10 @@ $unit_growth = (float)($kpis['unit_growth'] ?? 0);
             <tr>
                 <td>#<?= e((string)$r['sale_id']) ?></td>
                 <td><?= e(date('M d, Y', strtotime($r['full_date']))) ?></td>
-                <td><strong><?= e($r['product_name']) ?></strong>
-                    <div class="muted small"><?= e($r['product_category']) ?></div></td>
+                <td>
+                    <strong><?= e($r['product_name']) ?></strong>
+                    <div class="muted small"><?= e($r['product_category']) ?></div>
+                </td>
                 <td><?= e($r['store_name']) ?></td>
                 <td class="num"><?= e((string)$r['units']) ?></td>
                 <td class="num"><?= money((float)$r['unit_price']) ?></td>
@@ -200,59 +222,111 @@ $unit_growth = (float)($kpis['unit_growth'] ?? 0);
 
 <script>
 (function () {
-    const daily = <?= json_encode($daily) ?>;
-    const byCat = <?= json_encode($by_cat) ?>;
+    var monthly = <?= json_encode($monthly ?? []) ?>;
+    var byCat   = <?= json_encode($by_cat  ?? []) ?>;
 
-    const labels = daily.map(d => d.label);
-    const revArr = daily.map(d => parseFloat(d.revenue));
-    const profArr = daily.map(d => parseFloat(d.profit));
+    var labels  = monthly.map(function(d){ return d.label   || ''; });
+    var revArr  = monthly.map(function(d){ return parseFloat(d.revenue) || 0; });
+    var profArr = monthly.map(function(d){ return parseFloat(d.profit)  || 0; });
+    var ordArr  = monthly.map(function(d){ return parseInt(d.orders, 10) || 0; });
 
-    new ApexCharts(document.getElementById('chartTrend'), {
-        chart: { type:'area', height:340, fontFamily:'Inter, system-ui', toolbar:{show:false}, animations:{ easing:'easeinout', speed:600 } },
-        series: [
-            { name:'Pendapatan', data: revArr },
-            { name:'Laba',  data: profArr }
-        ],
-        xaxis: { categories: labels, labels:{ style:{ colors:'#64748b', fontSize:'11px' } } },
-        yaxis: { labels:{ formatter: v => '$' + (v >= 1000 ? (v/1000).toFixed(0)+'K' : v.toFixed(0)), style:{ colors:'#64748b' } } },
-        colors: ['#1E3A5F', '#22D3EE'],
-        stroke: { curve:'smooth', width:[3, 2.5] },
-        fill: { type:'gradient', gradient:{ opacityFrom:0.35, opacityTo:0.02, stops:[0, 90, 100] } },
-        dataLabels: { enabled: false },
-        grid: { borderColor:'#eef2f7', strokeDashArray:4 },
-        tooltip: { y:{ formatter: v => '$' + Number(v).toLocaleString() } },
-        legend: { position:'top', horizontalAlign:'right' }
-    }).render();
+    var grid = { borderColor: '#eef2f7', strokeDashArray: 4 };
 
-    new ApexCharts(document.getElementById('chartCategory'), {
-        chart: { type:'donut', height:340, fontFamily:'Inter, system-ui', animations:{ speed:600 } },
-        series: byCat.map(c => parseFloat(c.revenue)),
-        labels: byCat.map(c => c.category),
-        colors: ['#1E3A5F', '#F59E0B', '#22D3EE', '#10B981', '#6366F1'],
-        legend: { position:'bottom' },
-        plotOptions: {
-            pie:{ donut:{ size:'70%', labels:{
-                show:true,
-                total:{ show:true, label:'Total', formatter: w => '$' + (w.globals.seriesTotals.reduce((a,b)=>a+b,0)/1000000).toFixed(2)+'M' }
-            }}}
-        },
-        dataLabels:{ formatter:(val)=> Number(val).toFixed(1)+'%' },
-        stroke:{ colors:['#fff'] },
-        tooltip: { y:{ formatter: v => '$' + Number(v).toLocaleString() } }
-    }).render();
+    var zoomToolbar = {
+        show        : true,
+        autoSelected: 'zoom',
+        tools: {
+            download  : false,
+            selection : true,
+            zoom      : true,
+            zoomin    : true,
+            zoomout   : true,
+            pan       : true,
+            reset     : true,
+        export: { csv: { filename: 'trend-bulanan' } }
+    };
 
-    const sparkBase = (color, data) => ({
-        chart: { type:'area', height:60, sparkline:{enabled:true}, animations:{speed:500} },
-        stroke:{ curve:'smooth', width:2 },
-        fill:{ type:'gradient', gradient:{ opacityFrom:0.5, opacityTo:0 } },
-        colors:[color],
-        series:[{ data }],
-        tooltip: { enabled: false }
-    });
+    if (monthly.length && document.getElementById('chartTrend')) {
+        new ApexCharts(document.getElementById('chartTrend'), {
+            chart: {
+                type       : 'area',
+                height     : 340,
+                fontFamily : 'Inter, system-ui',
+                toolbar    : zoomToolbar,
+                zoom       : { enabled: true },
+                animations : { easing: 'easeinout', speed: 600 }
+            },
+            series: [
+                { name: 'Pendapatan', data: revArr  },
+                { name: 'Laba',       data: profArr }
+            ],
+            xaxis: {
+                categories : labels,
+                labels     : {
+                    rotate   : -35,
+                    style    : { colors: '#64748b', fontSize: '11px' },
+                    maxHeight: 60,
+                },
+                axisBorder : { show: false },
+                axisTicks  : { show: false },
+            },
+            yaxis: {
+                labels: {
+                    formatter: function(v){ return '$' + (v >= 1000 ? (v/1000).toFixed(0) + 'K' : v.toFixed(0)); },
+                    style    : { colors: '#64748b' }
+                }
+            },
+            colors     : ['#1E3A5F', '#22D3EE'],
+            stroke     : { curve: 'smooth', width: [3, 2.5] },
+            fill       : { type: 'gradient', gradient: { opacityFrom: 0.35, opacityTo: 0.02, stops: [0, 90, 100] } },
+            dataLabels : { enabled: false },
+            legend     : { show: false },
+            grid       : grid,
+            tooltip    : { y: { formatter: function(v){ return '$' + Number(v).toLocaleString(); } } },
+        }).render();
+    }
+
+    if (byCat.length && document.getElementById('chartCategory')) {
+        new ApexCharts(document.getElementById('chartCategory'), {
+            chart      : { type: 'donut', height: 340, fontFamily: 'Inter, system-ui', toolbar: { show: false }, animations: { speed: 600 } },
+            series     : byCat.map(function(c){ return parseFloat(c.revenue) || 0; }),
+            labels     : byCat.map(function(c){ return c.category || ''; }),
+            colors     : ['#1E3A5F', '#F59E0B', '#22D3EE', '#10B981', '#6366F1'],
+            legend     : { position: 'bottom' },
+            plotOptions: {
+                pie: { donut: { size: '70%', labels: {
+                    show : true,
+                    total: {
+                        show     : true,
+                        label    : 'Total',
+                        formatter: function(w){
+                            var sum = w.globals.seriesTotals.reduce(function(a,b){ return a+b; }, 0);
+                            return '$' + (sum / 1000000).toFixed(2) + 'M';
+                        }
+                    }
+                }}}
+            },
+            dataLabels : { formatter: function(val){ return Number(val).toFixed(1) + '%'; } },
+            stroke     : { colors: ['#fff'] },
+            tooltip    : { y: { formatter: function(v){ return '$' + Number(v).toLocaleString(); } } }
+        }).render();
+    }
+
+    function sparkBase(color, data) {
+        return {
+            chart  : { type: 'area', height: 60, sparkline: { enabled: true }, animations: { speed: 500 } },
+            stroke : { curve: 'smooth', width: 2 },
+            fill   : { type: 'gradient', gradient: { opacityFrom: 0.5, opacityTo: 0 } },
+            colors : [color],
+            series : [{ data: data }],
+            tooltip: { enabled: false }
+        };
+    }
+
     if (revArr.length) {
         new ApexCharts(document.getElementById('spark-0'), sparkBase('#22D3EE', revArr)).render();
-        new ApexCharts(document.getElementById('spark-1'), sparkBase('#F59E0B', daily.map(d => parseInt(d.orders||0)))).render();
-        new ApexCharts(document.getElementById('spark-2'), sparkBase('#3B82F6', daily.map((_,i)=>revArr[i]/1.5))).render();
+        new ApexCharts(document.getElementById('spark-1'), sparkBase('#F59E0B', ordArr)).render();
+        new ApexCharts(document.getElementById('spark-2'), sparkBase('#3B82F6', revArr.map(function(v){ return v / 1.5; }))).render();
         new ApexCharts(document.getElementById('spark-3'), sparkBase('#10B981', profArr)).render();
     }
 })();

@@ -62,8 +62,17 @@
 <div class="card">
     <div class="card-header">
         <div>
-            <div class="card-eyebrow">Tren Harian (90 hari terakhir dari periode terpilih)</div>
             <h3>Performa Penjualan dari Waktu ke Waktu</h3>
+        </div>
+        <div style="display:flex;align-items:center;gap:14px;font-size:12px;color:#64748b;flex-shrink:0;margin-left:auto">
+            <span style="display:flex;align-items:center;gap:6px">
+                <span style="display:inline-block;width:24px;height:3px;background:#1E3A5F;border-radius:2px"></span>
+                Pendapatan
+            </span>
+            <span style="display:flex;align-items:center;gap:6px">
+                <span style="display:inline-block;width:24px;height:3px;background:#22D3EE;border-radius:2px"></span>
+                Laba
+            </span>
         </div>
     </div>
     <div id="chartDaily" class="chart-area"></div>
@@ -72,16 +81,19 @@
 <div class="grid-2">
     <div class="card">
         <div class="card-header"><div><div class="card-eyebrow">Kanal</div><h3>Penjualan Berdasarkan Toko (Top 15)</h3></div></div>
+        <p style="font-size:11px;color:#94a3b8;margin:0 0 4px 4px">🔍 Drag untuk zoom · Klik ganda untuk reset</p>
         <div id="chartByStore" class="chart-area"></div>
     </div>
     <div class="card">
         <div class="card-header"><div><div class="card-eyebrow">Komposisi</div><h3>Penjualan Berdasarkan Kategori</h3></div></div>
+        <p style="font-size:11px;color:#94a3b8;margin:0 0 4px 4px">🔍 Drag untuk zoom · Klik ganda untuk reset</p>
         <div id="chartByCategory" class="chart-area"></div>
     </div>
 </div>
 
 <div class="card">
     <div class="card-header"><div><div class="card-eyebrow">Perilaku</div><h3>Penjualan Berdasarkan Hari</h3></div></div>
+    <p style="font-size:11px;color:#94a3b8;margin:0 0 4px 4px">🔍 Drag untuk zoom · Klik ganda untuk reset</p>
     <div id="chartDow" class="chart-area"></div>
 </div>
 
@@ -124,62 +136,135 @@
 
 <script>
 (function() {
-    const daily   = <?= json_encode($daily) ?>;
-    const byStore = <?= json_encode($by_store) ?>;
-    const byCat   = <?= json_encode($by_category) ?>;
-    const byDow   = <?= json_encode($by_dow) ?>;
+    var daily   = <?= json_encode($daily        ?? []) ?>;
+    var byStore = <?= json_encode($by_store     ?? []) ?>;
+    var byCat   = <?= json_encode($by_category  ?? []) ?>;
+    var byDow   = <?= json_encode($by_dow       ?? []) ?>;
 
-    new ApexCharts(document.getElementById('chartDaily'), {
-        chart: { type:'area', height:340, fontFamily:'Inter', toolbar:{show:true}, animations:{speed:500} },
-        series: [
-            { name:'Pendapatan', data: daily.map(d => parseFloat(d.revenue)) },
-            { name:'Laba',  data: daily.map(d => parseFloat(d.profit)) }
-        ],
-        xaxis: { categories: daily.map(d => d.day), type:'datetime', labels:{ style:{ colors:'#64748b' } } },
-        yaxis: { labels:{ formatter: v => '$' + (v >= 1000 ? (v/1000).toFixed(0)+'K':v.toFixed(0)) } },
-        colors: ['#1E3A5F','#22D3EE'],
-        stroke: { curve:'smooth', width:[2,2] },
-        fill: { type:'gradient', gradient:{ opacityFrom:0.35, opacityTo:0.02 } },
-        dataLabels:{enabled:false},
-        grid: { borderColor:'#eef2f7', strokeDashArray:4 },
-        tooltip: { x:{ format:'MMM dd, yyyy' }, y:{ formatter: v => '$' + Number(v).toLocaleString() } },
-        legend: { position:'top', horizontalAlign:'right' }
-    }).render();
+    var grid = { borderColor: '#eef2f7', strokeDashArray: 4 };
 
-    new ApexCharts(document.getElementById('chartByStore'), {
-        chart: { type:'bar', height:480, fontFamily:'Inter', toolbar:{show:false}, animations:{speed:500} },
-        series: [{ name:'Pendapatan', data: byStore.slice(0,15).map(s => parseFloat(s.revenue)) }],
-        xaxis: { categories: byStore.slice(0,15).map(s => s.store_name), labels:{ formatter: v => '$' + (v >= 1000 ? (v/1000).toFixed(0)+'K':v) } },
-        plotOptions: { bar:{ horizontal:true, borderRadius:6, distributed:true, barHeight:'70%' } },
-        colors:['#1E3A5F','#22D3EE','#F59E0B','#10B981','#6366F1','#EC4899','#3B82F6','#F97316','#14B8A6','#8B5CF6','#EF4444','#84CC16','#06B6D4','#A855F7','#F43F5E'],
-        dataLabels:{enabled:false}, legend:{show:false},
-        tooltip:{ y:{ formatter: v => '$' + Number(v).toLocaleString() } },
-        grid:{ borderColor:'#eef2f7' }
-    }).render();
+    function fmtK(v) {
+        return '$' + (Math.abs(v) >= 1000 ? (v / 1000).toFixed(0) + 'K' : Number(v).toFixed(0));
+    }
 
-    new ApexCharts(document.getElementById('chartByCategory'), {
-        chart: { type:'bar', height:380, fontFamily:'Inter', toolbar:{show:false}, animations:{speed:500} },
-        series: [{ name:'Pendapatan', data: byCat.map(c => parseFloat(c.revenue)) }],
-        xaxis: { categories: byCat.map(c => c.category) },
-        yaxis: { labels:{ formatter: v => '$' + (v >= 1000 ? (v/1000).toFixed(0)+'K':v) } },
-        plotOptions: { bar:{ borderRadius:8, columnWidth:'50%', distributed:true } },
-        colors:['#1E3A5F','#F59E0B','#22D3EE','#10B981','#6366F1'],
-        dataLabels:{enabled:false}, legend:{show:false},
-        tooltip:{ y:{ formatter: v => '$' + Number(v).toLocaleString() } },
-        grid:{ borderColor:'#eef2f7' }
-    }).render();
+    var zoomToolbar = {
+        show        : true,
+        autoSelected: 'zoom',
+        tools: {
+            download : false,
+            selection: true,
+            zoom     : true,
+            zoomin   : true,
+            zoomout  : true,
+            pan      : true,
+            reset    : true,
+        }
+    };
 
-    new ApexCharts(document.getElementById('chartDow'), {
-        chart: { type:'bar', height:300, fontFamily:'Inter', toolbar:{show:false}, animations:{speed:500} },
-        series: [{ name:'Pendapatan', data: byDow.map(d => parseFloat(d.revenue)) }],
-        xaxis: { categories: byDow.map(d => d.day_name) },
-        yaxis: { labels:{ formatter: v => '$' + (v >= 1000 ? (v/1000).toFixed(0)+'K':v) } },
-        plotOptions: { bar:{ borderRadius:8, columnWidth:'45%' } },
-        colors:['#22D3EE'],
-        fill: { type:'gradient', gradient:{ shade:'light', type:'vertical', opacityFrom:0.95, opacityTo:0.55 } },
-        dataLabels:{enabled:false},
-        tooltip:{ y:{ formatter: v => '$' + Number(v).toLocaleString() } },
-        grid:{ borderColor:'#eef2f7' }
-    }).render();
+    if (daily.length && document.getElementById('chartDaily')) {
+        new ApexCharts(document.getElementById('chartDaily'), {
+            chart: {
+                type: 'area', height: 340, fontFamily: 'Inter',
+                toolbar    : zoomToolbar,
+                zoom       : { enabled: true },
+                animations : { speed: 500 }
+            },
+            series: [
+                { name: 'Pendapatan', data: daily.map(function(d){ return parseFloat(d.revenue) || 0; }) },
+                { name: 'Laba',       data: daily.map(function(d){ return parseFloat(d.profit)  || 0; }) }
+            ],
+            xaxis: {
+                categories : daily.map(function(d){ return d.day || d.period || ''; }),
+                type       : 'datetime',
+                labels     : { style: { colors: '#64748b', fontSize: '11px' } },
+                axisBorder : { show: false }, axisTicks: { show: false }
+            },
+            yaxis  : { labels: { formatter: fmtK, style: { colors: '#64748b', fontSize: '11px' } } },
+            colors : ['#1E3A5F', '#22D3EE'],
+            stroke : { curve: 'smooth', width: [2, 2] },
+            fill   : { type: 'gradient', gradient: { opacityFrom: 0.35, opacityTo: 0.02 } },
+            dataLabels: { enabled: false },
+            legend : { show: false },
+            grid   : grid,
+            tooltip: { x: { format: 'dd MMM yyyy' }, y: { formatter: function(v){ return '$' + Number(v).toLocaleString(); } } }
+        }).render();
+    }
+
+    if (byStore.length && document.getElementById('chartByStore')) {
+        var storeData = byStore.slice(0, 15);
+        new ApexCharts(document.getElementById('chartByStore'), {
+            chart: {
+                type: 'bar', height: 480, fontFamily: 'Inter',
+                toolbar    : zoomToolbar,
+                zoom       : { enabled: true },
+                animations : { speed: 500 }
+            },
+            series     : [{ name: 'Pendapatan', data: storeData.map(function(s){ return parseFloat(s.revenue) || 0; }) }],
+            xaxis      : {
+                categories : storeData.map(function(s){ return s.store_name || ''; }),
+                labels     : { formatter: fmtK, style: { colors: '#64748b', fontSize: '11px' } },
+                axisBorder : { show: false }, axisTicks: { show: false }
+            },
+            yaxis      : { labels: { style: { colors: '#374151', fontSize: '11px' } } },
+            plotOptions: { bar: { horizontal: true, borderRadius: 6, distributed: true, barHeight: '70%' } },
+            colors     : ['#1E3A5F','#22D3EE','#F59E0B','#10B981','#6366F1','#EC4899',
+                          '#3B82F6','#F97316','#14B8A6','#8B5CF6','#EF4444','#84CC16',
+                          '#06B6D4','#A855F7','#F43F5E'],
+            dataLabels : { enabled: false },
+            legend     : { show: false },
+            grid       : grid,
+            tooltip    : { y: { formatter: function(v){ return '$' + Number(v).toLocaleString(); } } }
+        }).render();
+    }
+
+    if (byCat.length && document.getElementById('chartByCategory')) {
+        new ApexCharts(document.getElementById('chartByCategory'), {
+            chart: {
+                type: 'bar', height: 380, fontFamily: 'Inter',
+                toolbar    : zoomToolbar,
+                zoom       : { enabled: true },
+                animations : { speed: 500 }
+            },
+            series     : [{ name: 'Pendapatan', data: byCat.map(function(c){ return parseFloat(c.revenue) || 0; }) }],
+            xaxis      : {
+                categories : byCat.map(function(c){ return c.category || ''; }),
+                labels     : { style: { colors: '#64748b', fontSize: '11px' } },
+                axisBorder : { show: false }, axisTicks: { show: false }
+            },
+            yaxis      : { labels: { formatter: fmtK, style: { colors: '#64748b', fontSize: '11px' } } },
+            plotOptions: { bar: { borderRadius: 8, columnWidth: '50%', distributed: true } },
+            colors     : ['#1E3A5F','#F59E0B','#22D3EE','#10B981','#6366F1'],
+            dataLabels : { enabled: false },
+            legend     : { show: false },
+            grid       : grid,
+            tooltip    : { y: { formatter: function(v){ return '$' + Number(v).toLocaleString(); } } }
+        }).render();
+    }
+
+    if (byDow.length && document.getElementById('chartDow')) {
+        new ApexCharts(document.getElementById('chartDow'), {
+            chart: {
+                type: 'bar', height: 300, fontFamily: 'Inter',
+                toolbar    : zoomToolbar,
+                zoom       : { enabled: true },
+                animations : { speed: 500 }
+            },
+            series     : [{ name: 'Pendapatan', data: byDow.map(function(d){ return parseFloat(d.revenue) || 0; }) }],
+            xaxis      : {
+                categories : byDow.map(function(d){ return d.day_name || ''; }),
+                labels     : { style: { colors: '#64748b', fontSize: '11px' } },
+                axisBorder : { show: false }, axisTicks: { show: false }
+            },
+            yaxis      : { labels: { formatter: fmtK, style: { colors: '#64748b', fontSize: '11px' } } },
+            plotOptions: { bar: { borderRadius: 8, columnWidth: '45%' } },
+            colors     : ['#22D3EE'],
+            fill       : { type: 'gradient', gradient: { shade: 'light', type: 'vertical', opacityFrom: 0.95, opacityTo: 0.55 } },
+            dataLabels : { enabled: false },
+            legend     : { show: false },
+            grid       : grid,
+            tooltip    : { y: { formatter: function(v){ return '$' + Number(v).toLocaleString(); } } }
+        }).render();
+    }
+
 })();
 </script>

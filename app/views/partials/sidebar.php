@@ -15,11 +15,9 @@ $page = $page ?? '';
                     </linearGradient>
                 </defs>
                 <rect x="2" y="2" width="32" height="32" rx="9" fill="url(#brandGrad)"/>
-                <!-- bar chart -->
                 <rect x="9"  y="20" width="3" height="7" rx="1" fill="#22D3EE"/>
                 <rect x="14" y="16" width="3" height="11" rx="1" fill="#F59E0B"/>
                 <rect x="19" y="12" width="3" height="15" rx="1" fill="#FFFFFF"/>
-                <!-- toy block accent -->
                 <circle cx="26" cy="11" r="3" fill="#F59E0B"/>
                 <circle cx="26" cy="11" r="1.2" fill="#1E3A5F"/>
             </svg>

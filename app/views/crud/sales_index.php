@@ -16,12 +16,12 @@ $product_f = $product_f ?? '';
 <div class="card">
     <div class="card-header">
         <div>
-            <div class="card-eyebrow">Transactions</div>
-            <h3>Sales Records (<?= number_format($sales_data['total']) ?>)</h3>
+            <div class="card-eyebrow">Transaksi</div>
+            <h3>Data Penjualan (<?= number_format($sales_data['total']) ?>)</h3>
         </div>
         <button class="btn btn-primary" onclick="openModal('sale-create')">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-            New Sale
+            Penjualan Baru
         </button>
     </div>
 
@@ -29,19 +29,19 @@ $product_f = $product_f ?? '';
         <input type="hidden" name="r" value="sales">
         <div class="search-inline">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-            <input type="text" name="q" value="<?= e($search) ?>" placeholder="Search by product, store, or sale ID…">
+            <input type="text" name="q" value="<?= e($search) ?>" placeholder="Cari berdasarkan produk, toko, atau ID penjualan…">
         </div>
-        <button type="submit" class="btn btn-light">Search</button>
-        <a href="<?= url('sales') ?>" class="btn btn-ghost">Clear</a>
+        <button type="submit" class="btn btn-light">Cari</button>
+        <a href="<?= url('sales') ?>" class="btn btn-ghost">Reset</a>
     </form>
 
     <div class="table-wrap">
         <table class="table">
             <thead><tr>
-                <th>Sale ID</th><th>Date</th><th>Product</th><th>Store</th>
-                <th class="num">Units</th><th class="num">Unit Price</th>
-                <th class="num">Revenue</th><th class="num">Profit</th>
-                <th>Actions</th>
+                <th>ID Penjualan</th><th>Tanggal</th><th>Produk</th><th>Toko</th>
+                <th class="num">Unit</th><th class="num">Harga Satuan</th>
+                <th class="num">Pendapatan</th><th class="num">Keuntungan</th>
+                <th>Aksi</th>
             </tr></thead>
             <tbody>
             <?php foreach ($sales_data['rows'] as $r): ?>
@@ -71,7 +71,7 @@ $product_f = $product_f ?? '';
                     >
                         Edit
                     </button>
-                    <button class="btn btn-sm btn-danger-ghost" onclick='confirmSaleDelete(<?= (int)$r['sale_id'] ?>)'>Delete</button>
+                    <button class="btn btn-sm btn-danger-ghost" onclick='confirmSaleDelete(<?= (int)$r['sale_id'] ?>)'>Hapus</button>
                 </td>
             </tr>
             <?php endforeach; ?>
@@ -101,14 +101,14 @@ $product_f = $product_f ?? '';
 
 <div id="modal-sale-create" class="modal-overlay">
     <div class="modal-card">
-        <div class="modal-header"><h3>Record New Sale</h3><button class="modal-close" onclick="closeModal('sale-create')">&times;</button></div>
+        <div class="modal-header"><h3>Tambah Penjualan Baru</h3><button class="modal-close" onclick="closeModal('sale-create')">&times;</button></div>
         <form method="POST" action="<?= url('sales/store') ?>" class="modal-body">
             <input type="hidden" name="_token" value="<?= e(Auth::csrfToken()) ?>">
             <div class="form-grid">
                 <div class="form-group full">
-                    <label>Product</label>
+                    <label>Produk</label>
                     <select name="product_key" required>
-                        <option value="">Select product…</option>
+                        <option value="">Pilih produk…</option>
                         <?php foreach ($products as $p): ?>
                         <option value="<?= (int)$p['product_key'] ?>"
                         $sales_data-price="<?= e((string)$p['product_price']) ?>">
@@ -118,30 +118,30 @@ $product_f = $product_f ?? '';
                     </select>
                 </div>
                 <div class="form-group full">
-                    <label>Store</label>
+                    <label>Toko</label>
                     <select name="store_key" required>
-                        <option value="">Select store…</option>
+                        <option value="">Pilih toko…</option>
                         <?php foreach ($stores as $s): ?>
                         <option value="<?= (int)$s['store_key'] ?>"><?= e($s['store_name']) ?> · <?= e($s['store_city']) ?></option>
                         <?php endforeach; ?>
                     </select>
                 </div>
                 <div class="form-group">
-                    <label>Date</label>
+                    <label>Tanggal</label>
                     <input type="date" name="full_date" required min="<?= e($bounds['min_date']) ?>" value="<?= e($bounds['max_date']) ?>">
                 </div>
                 <div class="form-group">
-                    <label>Units</label>
+                    <label>Jumlah Unit</label>
                     <input type="number" name="units" min="1" value="1" required>
                 </div>
                 <div class="form-group full">
-                    <label>Unit Price <span class="muted small">(leave blank for catalog price)</span></label>
+                    <label>Harga Satuan <span class="muted small">(kosongkan untuk memakai harga katalog)</span></label>
                     <input type="number" step="0.01" name="unit_price">
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-ghost" onclick="closeModal('sale-create')">Cancel</button>
-                <button type="submit" class="btn btn-primary">Record Sale</button>
+                <button type="button" class="btn btn-ghost" onclick="closeModal('sale-create')">Batal</button>
+                <button type="submit" class="btn btn-primary">Simpan Penjualan</button>
             </div>
         </form>
     </div>
@@ -149,13 +149,13 @@ $product_f = $product_f ?? '';
 
 <div id="modal-sale-edit" class="modal-overlay">
     <div class="modal-card">
-        <div class="modal-header"><h3>Edit Sale</h3><button class="modal-close" onclick="closeModal('sale-edit')">&times;</button></div>
+        <div class="modal-header"><h3>Edit Penjualan</h3><button class="modal-close" onclick="closeModal('sale-edit')">&times;</button></div>
         <form method="POST" action="<?= url('sales/update') ?>" class="modal-body">
             <input type="hidden" name="_token" value="<?= e(Auth::csrfToken()) ?>">
             <input type="hidden" name="sales_key" id="es_key">
             <div class="form-grid">
                 <div class="form-group full">
-                    <label>Product</label>
+                    <label>Produk</label>
                     <select name="product_key" id="es_product" required>
                         <?php foreach ($products as $p): ?>
                         <option value="<?= (int)$p['product_key'] ?>"><?= e($p['product_name']) ?></option>
@@ -163,7 +163,7 @@ $product_f = $product_f ?? '';
                     </select>
                 </div>
                 <div class="form-group full">
-                    <label>Store</label>
+                    <label>Toko</label>
                     <select name="store_key" id="es_store" required>
                         <?php foreach ($stores as $s): ?>
                         <option value="<?= (int)$s['store_key'] ?>"><?= e($s['store_name']) ?> · <?= e($s['store_city']) ?></option>
@@ -171,21 +171,21 @@ $product_f = $product_f ?? '';
                     </select>
                 </div>
                 <div class="form-group">
-                    <label>Date</label>
+                    <label>Tanggal</label>
                     <input type="date" name="full_date" id="es_date" required>
                 </div>
                 <div class="form-group">
-                    <label>Units</label>
+                    <label>Jumlah Unit</label>
                     <input type="number" name="units" id="es_units" required min="1">
                 </div>
                 <div class="form-group full">
-                    <label>Unit Price</label>
+                    <label>Harga Satuan</label>
                     <input type="number" step="0.01" name="unit_price" id="es_price" required>
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-ghost" onclick="closeModal('sale-edit')">Cancel</button>
-                <button type="submit" class="btn btn-primary">Update</button>
+                <button type="button" class="btn btn-ghost" onclick="closeModal('sale-edit')">Batal</button>
+                <button type="submit" class="btn btn-primary">Perbarui</button>
             </div>
         </form>
     </div>
@@ -193,14 +193,14 @@ $product_f = $product_f ?? '';
 
 <div id="modal-sale-delete" class="modal-overlay">
     <div class="modal-card sm">
-        <div class="modal-header"><h3>Delete Sale?</h3><button class="modal-close" onclick="closeModal('sale-delete')">&times;</button></div>
+        <div class="modal-header"><h3>Hapus Penjualan?</h3><button class="modal-close" onclick="closeModal('sale-delete')">&times;</button></div>
         <form method="POST" action="<?= url('sales/delete') ?>" class="modal-body">
             <input type="hidden" name="_token" value="<?= e(Auth::csrfToken()) ?>">
             <input type="hidden" name="sales_key" id="ds_key">
-            <p>This will permanently remove this sale record. Continue?</p>
+            <p>Data penjualan ini akan dihapus secara permanen. Lanjutkan?</p>
             <div class="modal-footer">
-                <button type="button" class="btn btn-ghost" onclick="closeModal('sale-delete')">Cancel</button>
-                <button type="submit" class="btn btn-danger">Delete</button>
+                <button type="button" class="btn btn-ghost" onclick="closeModal('sale-delete')">Batal</button>
+                <button type="submit" class="btn btn-danger">Hapus</button>
             </div>
         </form>
     </div>

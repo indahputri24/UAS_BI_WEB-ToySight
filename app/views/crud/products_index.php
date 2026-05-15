@@ -18,13 +18,13 @@ $categories = $categories ?? [];
 <div class="card">
     <div class="card-header">
         <div>
-            <div class="card-eyebrow">Inventory Master product_data</div>
-            <h3>Products (<?= number_format($product_data['total']) ?>)</h3>
+            <div class="card-eyebrow">Data Master Inventaris</div>
+            <h3>Produk (<?= number_format($product_data['total']) ?>)</h3>
         </div>
         <?php if ($can_edit): ?>
         <button class="btn btn-primary" onclick="openModal('product-create')">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-            New Product
+            Produk Baru
         </button>
         <?php endif; ?>
     </div>
@@ -33,10 +33,10 @@ $categories = $categories ?? [];
         <input type="hidden" name="r" value="products">
         <div class="search-inline">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-            <input type="text" name="q" value="<?= e($search) ?>" placeholder="Search by name or product ID…">
+            <input type="text" name="q" value="<?= e($search) ?>" placeholder="Cari berdasarkan nama atau ID produk…">
         </div>
         <select name="cat">
-            <option value="">All categories</option>
+            <option value="">Semua kategori</option>
             <?php foreach ($categories as $c): ?>
             <option value="<?= e($c['category_name']) ?>" <?= ($category_f === $c['category_name']) ? 'selected':'' ?>>
                 <?= e($c['category_name']) ?>
@@ -44,7 +44,7 @@ $categories = $categories ?? [];
             <?php endforeach; ?>
         </select>
         <button type="submit" class="btn btn-light">Filter</button>
-        <a href="<?= url('products') ?>" class="btn btn-ghost">Clear</a>
+        <a href="<?= url('products') ?>" class="btn btn-ghost">Reset</a>
     </form>
 
     <div class="product-grid">
@@ -59,18 +59,18 @@ $categories = $categories ?? [];
             <div class="pc-name"><?= e($p['product_name']) ?></div>
             <div class="pc-cat"><?= e($p['product_category']) ?></div>
             <div class="pc-prices">
-                <div><span class="muted small">Cost</span><strong><?= money((float)$p['product_cost']) ?></strong></div>
-                <div><span class="muted small">Price</span><strong><?= money((float)$p['product_price']) ?></strong></div>
+                <div><span class="muted small">Modal</span><strong><?= money((float)$p['product_cost']) ?></strong></div>
+                <div><span class="muted small">Harga</span><strong><?= money((float)$p['product_price']) ?></strong></div>
             </div>
             <div class="pc-stats">
-                <div><span class="muted small">Stock</span><strong><?= compact_number((int)$p['total_stock']) ?></strong></div>
-                <div><span class="muted small">Sold</span><strong><?= compact_number((int)$p['total_units_sold']) ?></strong></div>
-                <div><span class="muted small">Revenue</span><strong><?= compact_money((float)$p['total_revenue']) ?></strong></div>
+                <div><span class="muted small">Stok</span><strong><?= compact_number((int)$p['total_stock']) ?></strong></div>
+                <div><span class="muted small">Terjual</span><strong><?= compact_number((int)$p['total_units_sold']) ?></strong></div>
+                <div><span class="muted small">Pendapatan</span><strong><?= compact_money((float)$p['total_revenue']) ?></strong></div>
             </div>
             <?php if ($can_edit): ?>
             <div class="pc-actions">
                 <button class="btn btn-sm btn-light" onclick='openEdit(<?= json_encode($p) ?>)'>Edit</button>
-                <button class="btn btn-sm btn-danger-ghost" onclick='confirmDelete(<?= (int)$p['product_key'] ?>, <?= json_encode($p['product_name']) ?>)'>Delete</button>
+                <button class="btn btn-sm btn-danger-ghost" onclick='confirmDelete(<?= (int)$p['product_key'] ?>, <?= json_encode($p['product_name']) ?>)'>Hapus</button>
             </div>
             <?php endif; ?>
         </div>
@@ -95,18 +95,18 @@ $categories = $categories ?? [];
 <div id="modal-product-create" class="modal-overlay">
     <div class="modal-card">
         <div class="modal-header">
-            <h3>New Product</h3>
+            <h3>Produk Baru</h3>
             <button class="modal-close" onclick="closeModal('product-create')">&times;</button>
         </div>
         <form method="POST" action="<?= url('products/store') ?>" class="modal-body">
             <input type="hidden" name="_token" value="<?= e(Auth::csrfToken()) ?>">
             <div class="form-grid">
                 <div class="form-group full">
-                    <label>Product name</label>
+                    <label>Nama produk</label>
                     <input type="text" name="product_name" required>
                 </div>
                 <div class="form-group full">
-                    <label>Category</label>
+                    <label>Kategori</label>
                     <select name="category_key" required>
                         <?php foreach ($categories as $c): ?>
                         <option value="<?= (int)$c['category_key'] ?>"><?= e($c['category_name']) ?></option>
@@ -114,17 +114,17 @@ $categories = $categories ?? [];
                     </select>
                 </div>
                 <div class="form-group">
-                    <label>Cost</label>
+                    <label>Modal</label>
                     <input type="number" step="0.01" name="product_cost" required min="0">
                 </div>
                 <div class="form-group">
-                    <label>Price</label>
+                    <label>Harga</label>
                     <input type="number" step="0.01" name="product_price" required min="0">
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-ghost" onclick="closeModal('product-create')">Cancel</button>
-                <button type="submit" class="btn btn-primary">Save Product</button>
+                <button type="button" class="btn btn-ghost" onclick="closeModal('product-create')">Batal</button>
+                <button type="submit" class="btn btn-primary">Simpan Produk</button>
             </div>
         </form>
     </div>
@@ -133,7 +133,7 @@ $categories = $categories ?? [];
 <div id="modal-product-edit" class="modal-overlay">
     <div class="modal-card">
         <div class="modal-header">
-            <h3>Edit Product</h3>
+            <h3>Edit Produk</h3>
             <button class="modal-close" onclick="closeModal('product-edit')">&times;</button>
         </div>
         <form method="POST" action="<?= url('products/update') ?>" class="modal-body">
@@ -141,11 +141,11 @@ $categories = $categories ?? [];
             <input type="hidden" name="product_key" id="edit_key">
             <div class="form-grid">
                 <div class="form-group full">
-                    <label>Product name</label>
+                    <label>Nama produk</label>
                     <input type="text" name="product_name" id="edit_name" required>
                 </div>
                 <div class="form-group full">
-                    <label>Category</label>
+                    <label>Kategori</label>
                     <select name="category_key" id="edit_cat" required>
                         <?php foreach ($categories as $c): ?>
                         <option value="<?= (int)$c['category_key'] ?>"><?= e($c['category_name']) ?></option>
@@ -153,17 +153,17 @@ $categories = $categories ?? [];
                     </select>
                 </div>
                 <div class="form-group">
-                    <label>Cost</label>
+                    <label>Modal</label>
                     <input type="number" step="0.01" name="product_cost" id="edit_cost" required min="0">
                 </div>
                 <div class="form-group">
-                    <label>Price</label>
+                    <label>Harga</label>
                     <input type="number" step="0.01" name="product_price" id="edit_price" required min="0">
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-ghost" onclick="closeModal('product-edit')">Cancel</button>
-                <button type="submit" class="btn btn-primary">Update</button>
+                <button type="button" class="btn btn-ghost" onclick="closeModal('product-edit')">Batal</button>
+                <button type="submit" class="btn btn-primary">Perbarui</button>
             </div>
         </form>
     </div>
@@ -171,15 +171,15 @@ $categories = $categories ?? [];
 
 <div id="modal-product-delete" class="modal-overlay">
     <div class="modal-card sm">
-        <div class="modal-header"><h3>Delete Product?</h3><button class="modal-close" onclick="closeModal('product-delete')">&times;</button></div>
+        <div class="modal-header"><h3>Hapus Produk?</h3><button class="modal-close" onclick="closeModal('product-delete')">&times;</button></div>
         <form method="POST" action="<?= url('products/delete') ?>" class="modal-body">
             <input type="hidden" name="_token" value="<?= e(Auth::csrfToken()) ?>">
             <input type="hidden" name="product_key" id="del_key">
-            <p>You are about to delete <strong id="del_name"></strong>. This action cannot be undone.</p>
-            <p class="muted small">Products with sales records cannot be deleted.</p>
+            <p>Anda akan menghapus <strong id="del_name"></strong>. Tindakan ini tidak dapat dibatalkan.</p>
+            <p class="muted small">Produk yang memiliki data penjualan tidak dapat dihapus.</p>
             <div class="modal-footer">
-                <button type="button" class="btn btn-ghost" onclick="closeModal('product-delete')">Cancel</button>
-                <button type="submit" class="btn btn-danger">Delete</button>
+                <button type="button" class="btn btn-ghost" onclick="closeModal('product-delete')">Batal</button>
+                <button type="submit" class="btn btn-danger">Hapus</button>
             </div>
         </form>
     </div>

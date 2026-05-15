@@ -11,7 +11,7 @@ class DashboardController extends Controller
         $end    = (string)input('end_date', $bounds['max_date']);
 
         $kpis     = $model->kpis($start, $end);
-        $daily  = $model->dailyTrend($start, $end);
+        $monthly  = $model->monthlyTrend($start, $end);
         $byCat    = $model->revenueByCategory($start, $end);
         $topProd  = $model->topProducts(5, $start, $end);
         $topStore = $model->topStores(5, $start, $end);
@@ -21,7 +21,7 @@ class DashboardController extends Controller
             'page'      => 'dashboard',
             'page_title'=> 'Dashboard Overview',
             'kpis'      => $kpis,
-            'daily'     => $daily,
+            'monthly'   => $monthly,
             'by_cat'    => $byCat,
             'top_prod'  => $topProd,
             'top_store' => $topStore,

@@ -39,11 +39,7 @@ $marginClass = static function (float $pct): string {
 };
 ?>
 
-<?php /* ════════ HIDDEN MASTER FORM ════════════════════════
-         All nav items and date pickers write into this form,
-         then trigger submit(). action matches other GET forms
-         in the codebase: base_url()/index.php?r=reports
-         ═══════════════════════════════════════════════════ */ ?>
+<?php ?>
 <form id="rpForm" method="GET" action="<?= base_url() ?>/index.php" style="display:none">
     <input type="hidden" name="r"          value="reports">
     <input type="hidden" id="rpType"       name="type"       value="<?= e($report_type) ?>">
@@ -51,9 +47,7 @@ $marginClass = static function (float $pct): string {
     <input type="hidden" id="rpEndDate"    name="end_date"   value="<?= e($end_date) ?>">
 </form>
 
-<?php /* ════════ KPI STRIP ════════════════════════════════
-         Uses existing .kpi-grid / .kpi-card from app.css
-         ═══════════════════════════════════════════════════ */ ?>
+<?php  ?>
 <div class="kpi-grid" style="margin-bottom:20px">
 
     <div class="kpi-card kpi-cyan">
@@ -108,25 +102,19 @@ $marginClass = static function (float $pct): string {
         <div class="kpi-label">Laba Kotor</div>
     </div>
 
-</div><!-- /kpi-grid -->
+</div>
 
 
-<?php /* ════════ TWO-COLUMN LAYOUT ════════════════════════
-         .rp-layout  → defined in reports.css
-         lives entirely inside .content from main layout
-         ═══════════════════════════════════════════════════ */ ?>
+<?php  ?>
 <div class="rp-layout">
 
-    <!-- ════ LEFT SIDEBAR: type nav + date filter ═══════ -->
     <aside class="rp-sidebar">
 
         <div class="rp-sidebar-head">Tipe Laporan</div>
 
         <nav class="rp-nav">
             <?php foreach ($types as $key => $meta): ?>
-            <?php /* Each item is an <a> tag that builds the full URL directly.
-                     This is the most reliable approach: no JS needed to switch type,
-                     start_date / end_date are preserved via URL params. */ ?>
+            <?php ?>
             <a class="rp-nav-item <?= $report_type === $key ? 'is-active' : '' ?>"
                href="<?= base_url() ?>/index.php?r=reports&type=<?= urlencode($key) ?>&start_date=<?= urlencode($start_date) ?>&end_date=<?= urlencode($end_date) ?>">
                 <span class="rp-nav-icon">
@@ -168,13 +156,10 @@ $marginClass = static function (float $pct): string {
             </button>
         </div>
 
-    </aside><!-- /rp-sidebar -->
+    </aside>
 
-
-    <!-- ════ RIGHT: CHART + TABLE ═══════════════════════ -->
     <div class="rp-main">
 
-        <!-- Chart card -->
         <div class="rp-chart-card">
             <div class="rp-chart-head">
                 <div>
@@ -184,12 +169,11 @@ $marginClass = static function (float $pct): string {
                 <div class="rp-chart-legend" id="rpLegend"></div>
             </div>
             <div id="rp-chart"></div>
-        </div><!-- /chart card -->
+        </div>
 
-        <!-- Result card -->
         <div class="rp-result-card">
-            <!-- <pre><?php print_r($report_type); ?></pre>  -->
-            <!-- <pre><?php print_r($data); ?></pre>  -->
+            <?php print_r($report_type); ?>
+            <?php print_r($data); ?>
             <div class="rp-result-head">
                 <div>
                     <div class="rp-result-eyebrow">
@@ -223,9 +207,8 @@ $marginClass = static function (float $pct): string {
                     </a>
                 </div>
                 <?php endif; ?>
-            </div><!-- /rp-result-head -->
+            </div>
 
-            <!-- ════ DATA TABLE ═══════════════════════════════ -->
             <?php if ($dataCount === 0): ?>
 
             <div class="rp-empty">
@@ -240,10 +223,7 @@ $marginClass = static function (float $pct): string {
             <div class="rp-table-wrap">
                 <table class="table table-clean">
 
-                    <?php /* ── SALES SUMMARY ──────────────────────────────────────
-                               Model: SalesModel::monthlyTrend()
-                               Keys : label | revenue | profit | orders
-                               ─────────────────────────────────────────────────── */ ?>
+                    <?php ?>
                     <?php if ($report_type === 'sales_summary'): ?>
                     <thead>
                         <tr>
@@ -268,11 +248,7 @@ $marginClass = static function (float $pct): string {
                     <?php endforeach; ?>
                     </tbody>
 
-                    <?php /* ── PRODUCT PERFORMANCE ─────────────────────────────────
-                               Model: ProductModel::topRevenue(50, $start, $end)
-                               Keys : product_name | product_category | price_tier
-                                      units | revenue | profit | margin_pct
-                               ─────────────────────────────────────────────────── */ ?>
+                    <?php ?>
                     <?php elseif ($report_type === 'product_performance'): ?>
                     <thead>
                         <tr>
@@ -309,11 +285,7 @@ $marginClass = static function (float $pct): string {
                     <?php endforeach; ?>
                     </tbody>
 
-                    <?php /* ── STORE RANKING ─────────────────────────────────────
-                               Model: StoreModel::ranking($start, $end)
-                               Keys : store_name | store_city | store_location
-                                      orders | units | revenue | profit
-                               ─────────────────────────────────────────────────── */ ?>
+                    <?php ?>
                     <?php elseif ($report_type === 'store_ranking'): ?>
                     <thead>
                         <tr>
@@ -344,10 +316,7 @@ $marginClass = static function (float $pct): string {
                     <?php endforeach; ?>
                     </tbody>
 
-                    <?php /* ── CATEGORY SALES ───────────────────────────────────
-                               Model: ProductModel::categoryPerformance($start, $end)
-                               Keys : category | products | units | revenue | profit
-                               ─────────────────────────────────────────────────── */ ?>
+                    <?php ?>
                     <?php elseif ($report_type === 'category_sales'): ?>
                     <thead>
                         <tr>
@@ -377,7 +346,7 @@ $marginClass = static function (float $pct): string {
                     <?php endif; ?>
 
                 </table>
-            </div><!-- /rp-table-wrap -->
+            </div>
 
             <div class="rp-result-foot">
                 <span><?= $dataCount ?> baris ditampilkan</span>
@@ -390,45 +359,31 @@ $marginClass = static function (float $pct): string {
                 </span>
             </div>
 
-            <?php endif; /* end empty check */ ?>
+            <?php endif; ?>
 
-        </div><!-- /rp-result-card -->
+        </div>
 
-    </div><!-- /rp-main -->
+    </div>
 
-</div><!-- /rp-layout -->
+</div>
 
 
-<?php /* ════════ APEXCHARTS BOOTSTRAP ════════════════════════
-         KEY FIX: rpSelectType() is declared at WINDOW level,
-         OUTSIDE DOMContentLoaded, so onclick="" in HTML can
-         reach it. The chart init is the only part deferred
-         to DOMContentLoaded (DOM must exist before render).
-
-         PHP → JS data flow:
-           $data   → json_encode → const DATA   (server rows)
-           $report_type → json_encode → const REPORT_TYPE
-         ═══════════════════════════════════════════════════ */ ?>
+<?php ?>
 <script>
-/* ── Global helper: called by sidebar <a> links (no JS needed
-      for navigation, but kept for any programmatic use).       */
+
 function rpSelectType(type) {
     document.getElementById('rpType').value = type;
     document.getElementById('rpForm').submit();
 }
 
-/* ── Chart initialisation: runs after DOM is ready ─────────── */
 document.addEventListener('DOMContentLoaded', function () {
 
-    /* PHP data injected as JSON ─────────────────────────────── */
     var REPORT_TYPE = <?= json_encode($report_type, JSON_THROW_ON_ERROR) ?>;
     var DATA        = <?= json_encode(array_values($data ?? []), JSON_THROW_ON_ERROR) ?>;
 
-    /* Bail out early if nothing to chart */
     var chartEl = document.getElementById('rp-chart');
     if (!chartEl || !window.ApexCharts || DATA.length === 0) return;
 
-    /* Colour palette matching app.css vars */
     var C = {
         blue   : '#1D4ED8',
         green  : '#10B981',
@@ -438,7 +393,6 @@ document.addEventListener('DOMContentLoaded', function () {
         text   : '#1F2937',
     };
 
-    /* Axis label formatters */
     function fmtMoney(v) {
         var a = Math.abs(v);
         if (a >= 1e6) return '$' + (v / 1e6).toFixed(1) + 'M';
@@ -452,7 +406,6 @@ document.addEventListener('DOMContentLoaded', function () {
         return String(v);
     }
 
-    /* Custom legend */
     function renderLegend(items) {
         var el = document.getElementById('rpLegend');
         if (!el) return;
@@ -461,7 +414,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }).join('');
     }
 
-    /* Shared base config */
     var shared = {
         chart: {
             fontFamily : 'Inter, sans-serif',
@@ -486,7 +438,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     var opts = null;
 
-    /* ── 1. SALES SUMMARY → area chart: Revenue & Profit ─── */
     if (REPORT_TYPE === 'sales_summary') {
         var labels  = DATA.map(function(d){ return d.label   || ''; });
         var revenue = DATA.map(function(d){ return parseFloat(d.revenue) || 0; });
@@ -512,7 +463,6 @@ document.addEventListener('DOMContentLoaded', function () {
             yaxis  : { labels: { style: { fontSize: '11px', colors: C.muted }, formatter: fmtMoney } },
         });
 
-    /* ── 2. PRODUCT PERFORMANCE → horizontal bar: Top 10 ── */
     } else if (REPORT_TYPE === 'product_performance') {
         var top10   = DATA.slice(0, 10);
         var labels  = top10.map(function(d){ return d.product_name || ''; });
@@ -535,7 +485,6 @@ document.addEventListener('DOMContentLoaded', function () {
             yaxis : { labels: { style: { fontSize: '11px', colors: C.text } } },
         });
 
-    /* ── 3. STORE RANKING → grouped column bar ─────────── */
     } else if (REPORT_TYPE === 'store_ranking') {
         var labels  = DATA.map(function(d){ return d.store_name || ''; });
         var revenue = DATA.map(function(d){ return parseFloat(d.revenue) || 0; });

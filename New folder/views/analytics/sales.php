@@ -62,7 +62,6 @@
 <div class="card">
     <div class="card-header">
         <div>
-            <div class="card-eyebrow">Tren Harian (90 hari terakhir dari periode terpilih)</div>
             <h3>Performa Penjualan dari Waktu ke Waktu</h3>
         </div>
     </div>

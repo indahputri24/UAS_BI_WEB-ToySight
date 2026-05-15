@@ -15,12 +15,12 @@ $store_data['per_page']= isset($store_data['per_page'])          ? (int)$store_d
 <div class="card">
     <div class="card-header">
         <div>
-            <div class="card-eyebrow">Retail Network</div>
-            <h3>Stores (<?= number_format($store_data['total']) ?>)</h3>
+            <div class="card-eyebrow">Jaringan Retail</div>
+            <h3>Toko (<?= number_format($store_data['total']) ?>)</h3>
         </div>
         <button class="btn btn-primary" onclick="openModal('store-create')">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-            New Store
+            Tambah Toko
         </button>
     </div>
 
@@ -28,16 +28,16 @@ $store_data['per_page']= isset($store_data['per_page'])          ? (int)$store_d
         <input type="hidden" name="r" value="stores">
         <div class="search-inline">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-            <input type="text" name="q" value="<?= e($search) ?>" placeholder="Search store name or city…">
+            <input type="text" name="q" value="<?= e($search) ?>" placeholder="Cari nama toko atau kota…">
         </div>
         <select name="city">
-            <option value="">All cities</option>
+            <option value="">Semua kota</option>
             <?php foreach ($cities as $c): ?>
             <option value="<?= e($c) ?>" <?= ($city_f === $c) ? 'selected':'' ?>><?= e($c) ?></option>
             <?php endforeach; ?>
         </select>
         <button type="submit" class="btn btn-light">Filter</button>
-        <a href="<?= url('stores') ?>" class="btn btn-ghost">Clear</a>
+        <a href="<?= url('stores') ?>" class="btn btn-ghost">Reset</a>
     </form>
 
     <div class="store-grid">
@@ -55,16 +55,16 @@ $store_data['per_page']= isset($store_data['per_page'])          ? (int)$store_d
                 <?= e($s['store_city']) ?>
             </div>
             <div class="sc-meta">
-                <div><span class="muted small">Opened</span><strong><?= e(date('M Y', strtotime($s['store_open_date']))) ?></strong></div>
-                <div><span class="muted small">Age</span><strong><?= number_format((float)$s['store_age_years'],1) ?> yrs</strong></div>
+                <div><span class="muted small">Dibuka</span><strong><?= e(date('M Y', strtotime($s['store_open_date']))) ?></strong></div>
+                <div><span class="muted small">Usia</span><strong><?= number_format((float)$s['store_age_years'],1) ?> thn</strong></div>
             </div>
             <div class="sc-stats">
-                <div><span class="muted small">Revenue</span><strong><?= compact_money((float)$s['total_revenue']) ?></strong></div>
-                <div><span class="muted small">Orders</span><strong><?= compact_number((int)$s['total_orders']) ?></strong></div>
+                <div><span class="muted small">Pendapatan</span><strong><?= compact_money((float)$s['total_revenue']) ?></strong></div>
+                <div><span class="muted small">Pesanan</span><strong><?= compact_number((int)$s['total_orders']) ?></strong></div>
             </div>
             <div class="sc-actions">
                 <button class="btn btn-sm btn-light" onclick='openStoreEdit(<?= json_encode($s) ?>)'>Edit</button>
-                <button class="btn btn-sm btn-danger-ghost" onclick='confirmStoreDelete(<?= (int)$s['store_key'] ?>, <?= json_encode($s['store_name']) ?>)'>Delete</button>
+                <button class="btn btn-sm btn-danger-ghost" onclick='confirmStoreDelete(<?= (int)$s['store_key'] ?>, <?= json_encode($s['store_name']) ?>)'>Hapus</button>
             </div>
         </div>
         <?php endforeach; ?>
@@ -86,23 +86,23 @@ $store_data['per_page']= isset($store_data['per_page'])          ? (int)$store_d
 
 <div id="modal-store-create" class="modal-overlay">
     <div class="modal-card">
-        <div class="modal-header"><h3>New Store</h3><button class="modal-close" onclick="closeModal('store-create')">&times;</button></div>
+        <div class="modal-header"><h3>Tambah Toko Baru</h3><button class="modal-close" onclick="closeModal('store-create')">&times;</button></div>
         <form method="POST" action="<?= url('stores/store') ?>" class="modal-body">
             <input type="hidden" name="_token" value="<?= e(Auth::csrfToken()) ?>">
             <div class="form-grid">
                 <div class="form-group full">
-                    <label>Store name</label>
+                    <label>Nama toko</label>
                     <input type="text" name="store_name" required>
                 </div>
                 <div class="form-group">
-                    <label>City</label>
+                    <label>Kota</label>
                     <input type="text" name="store_city" required list="cities-list">
                     <datalist id="cities-list">
                         <?php foreach ($cities as $c): ?><option value="<?= e($c) ?>"><?php endforeach; ?>
                     </datalist>
                 </div>
                 <div class="form-group">
-                    <label>Location type</label>
+                    <label>Tipe lokasi</label>
                     <select name="store_location" required>
                         <?php foreach ($locations as $l): ?>
                         <option value="<?= e($l) ?>"><?= e($l) ?></option>
@@ -110,13 +110,13 @@ $store_data['per_page']= isset($store_data['per_page'])          ? (int)$store_d
                     </select>
                 </div>
                 <div class="form-group full">
-                    <label>Open date</label>
+                    <label>Tanggal dibuka</label>
                     <input type="date" name="store_open_date" required value="<?= date('Y-m-d') ?>">
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-ghost" onclick="closeModal('store-create')">Cancel</button>
-                <button type="submit" class="btn btn-primary">Save Store</button>
+                <button type="button" class="btn btn-ghost" onclick="closeModal('store-create')">Batal</button>
+                <button type="submit" class="btn btn-primary">Simpan Toko</button>
             </div>
         </form>
     </div>
@@ -124,24 +124,24 @@ $store_data['per_page']= isset($store_data['per_page'])          ? (int)$store_d
 
 <div id="modal-store-edit" class="modal-overlay">
     <div class="modal-card">
-        <div class="modal-header"><h3>Edit Store</h3><button class="modal-close" onclick="closeModal('store-edit')">&times;</button></div>
+        <div class="modal-header"><h3>Edit Toko</h3><button class="modal-close" onclick="closeModal('store-edit')">&times;</button></div>
         <form method="POST" action="<?= url('stores/update') ?>" class="modal-body">
             <input type="hidden" name="_token" value="<?= e(Auth::csrfToken()) ?>">
             <input type="hidden" name="store_key" id="se_key">
             <div class="form-grid">
-                <div class="form-group full"><label>Store name</label><input type="text" name="store_name" id="se_name" required></div>
-                <div class="form-group"><label>City</label><input type="text" name="store_city" id="se_city" required list="cities-list"></div>
+                <div class="form-group full"><label>Nama toko</label><input type="text" name="store_name" id="se_name" required></div>
+                <div class="form-group"><label>Kota</label><input type="text" name="store_city" id="se_city" required list="cities-list"></div>
                 <div class="form-group">
-                    <label>Location type</label>
+                    <label>Tipe lokasi</label>
                     <select name="store_location" id="se_loc" required>
                         <?php foreach ($locations as $l): ?><option value="<?= e($l) ?>"><?= e($l) ?></option><?php endforeach; ?>
                     </select>
                 </div>
-                <div class="form-group full"><label>Open date</label><input type="date" name="store_open_date" id="se_date" required></div>
+                <div class="form-group full"><label>Tanggal dibuka</label><input type="date" name="store_open_date" id="se_date" required></div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-ghost" onclick="closeModal('store-edit')">Cancel</button>
-                <button type="submit" class="btn btn-primary">Update</button>
+                <button type="button" class="btn btn-ghost" onclick="closeModal('store-edit')">Batal</button>
+                <button type="submit" class="btn btn-primary">Perbarui</button>
             </div>
         </form>
     </div>
@@ -149,15 +149,15 @@ $store_data['per_page']= isset($store_data['per_page'])          ? (int)$store_d
 
 <div id="modal-store-delete" class="modal-overlay">
     <div class="modal-card sm">
-        <div class="modal-header"><h3>Delete Store?</h3><button class="modal-close" onclick="closeModal('store-delete')">&times;</button></div>
+        <div class="modal-header"><h3>Hapus Toko?</h3><button class="modal-close" onclick="closeModal('store-delete')">&times;</button></div>
         <form method="POST" action="<?= url('stores/delete') ?>" class="modal-body">
             <input type="hidden" name="_token" value="<?= e(Auth::csrfToken()) ?>">
             <input type="hidden" name="store_key" id="ds_skey">
-            <p>You are about to delete <strong id="ds_sname"></strong>. This action cannot be undone.</p>
-            <p class="muted small">Stores with sales records cannot be deleted.</p>
+            <p>Anda akan menghapus <strong id="ds_sname"></strong>. Tindakan ini tidak dapat dibatalkan.</p>
+            <p class="muted small">Toko yang memiliki data penjualan tidak dapat dihapus.</p>
             <div class="modal-footer">
-                <button type="button" class="btn btn-ghost" onclick="closeModal('store-delete')">Cancel</button>
-                <button type="submit" class="btn btn-danger">Delete</button>
+                <button type="button" class="btn btn-ghost" onclick="closeModal('store-delete')">Batal</button>
+                <button type="submit" class="btn btn-danger">Hapus</button>
             </div>
         </form>
     </div>
