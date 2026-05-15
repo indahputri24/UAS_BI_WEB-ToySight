@@ -6,6 +6,8 @@ $total_prof  = (float)($kpis['total_profit'] ?? 0);
 $rev_growth  = (float)($kpis['rev_growth'] ?? 0);
 $ord_growth  = (float)($kpis['order_growth'] ?? 0);
 $unit_growth = (float)($kpis['unit_growth'] ?? 0);
+
+$trendData = $monthly ?? $daily ?? [];
 ?>
 <div class="hero-banner">
     <div class="hero-text">
@@ -222,13 +224,13 @@ $unit_growth = (float)($kpis['unit_growth'] ?? 0);
 
 <script>
 (function () {
-    var monthly = <?= json_encode($monthly ?? []) ?>;
-    var byCat   = <?= json_encode($by_cat  ?? []) ?>;
+    var trendData = <?= json_encode(array_values($trendData)) ?>;
+    var byCat     = <?= json_encode($by_cat ?? []) ?>;
 
-    var labels  = monthly.map(function(d){ return d.label   || ''; });
-    var revArr  = monthly.map(function(d){ return parseFloat(d.revenue) || 0; });
-    var profArr = monthly.map(function(d){ return parseFloat(d.profit)  || 0; });
-    var ordArr  = monthly.map(function(d){ return parseInt(d.orders, 10) || 0; });
+    var labels  = trendData.map(function(d){ return d.label   || d.day || ''; });
+    var revArr  = trendData.map(function(d){ return parseFloat(d.revenue) || 0; });
+    var profArr = trendData.map(function(d){ return parseFloat(d.profit)  || 0; });
+    var ordArr  = trendData.map(function(d){ return parseInt(d.orders, 10) || 0; });
 
     var grid = { borderColor: '#eef2f7', strokeDashArray: 4 };
 
@@ -236,17 +238,17 @@ $unit_growth = (float)($kpis['unit_growth'] ?? 0);
         show        : true,
         autoSelected: 'zoom',
         tools: {
-            download  : false,
-            selection : true,
-            zoom      : true,
-            zoomin    : true,
-            zoomout   : true,
-            pan       : true,
-            reset     : true,
-        export: { csv: { filename: 'trend-bulanan' } }
+            download : false,
+            selection: true,
+            zoom     : true,
+            zoomin   : true,
+            zoomout  : true,
+            pan      : true,
+            reset    : true,
+        }
     };
 
-    if (monthly.length && document.getElementById('chartTrend')) {
+    if (trendData.length && document.getElementById('chartTrend')) {
         new ApexCharts(document.getElementById('chartTrend'), {
             chart: {
                 type       : 'area',
